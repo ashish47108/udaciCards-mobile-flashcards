@@ -17,7 +17,7 @@ class DecksList extends Component {
     }
 
     render() {
-        const { decks } = this.props;
+        const { decks,navigation } = this.props;
 
         if (!this.state.loadingComplete) {
             return (
@@ -32,13 +32,13 @@ class DecksList extends Component {
                     {console.log(decks)}
                     {console.log('=================')}
                     {console.log(Object.values(decks))}
-                    <Text>Loading Decks complete ....</Text>
+                    <Text>Loading Decks complete ....DeckList</Text>
                     <FlatList
                         data={Object.values(decks)}
                         keyExtractor={(item, index) => item.name}
                         renderItem={({ item }) => (
                             <TouchableOpacity 
-                            onPress={() => console.log('Item is is ' + item.id +'::' + item.name) }
+                            onPress={() =>  navigation.navigate("Deck", { deckId: item.id, name: item.name }) }
                              >
                                 <Text >{item.name}</Text>
                                 <Text>{`${item.cards.length} card(s) `}</Text>
@@ -50,7 +50,7 @@ class DecksList extends Component {
                 (
                     <View>
                         <Text style={{ fontSize: 16 }}>You don't have any decks.</Text>
-                        <Text style={{ fontSize: 16 }}>Click on Add Decks to add the same.</Text>
+                        <Text style={{ fontSize: 16 }}>Click on Add Deck to add the same.</Text>
                     </View>
                 );
         }

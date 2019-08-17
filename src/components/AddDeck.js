@@ -28,6 +28,11 @@ class AddDeck extends Component {
     this.props.createDeck(deck.id,deck.name);
     saveDeck(deck);
     console.log('deck added successfully');
+
+    this.props.navigation.navigate("Deck", {
+        deckId: deck.id,
+        name: deck.name
+      });
           
     this.setState(() => ({
         input: ""
@@ -40,6 +45,7 @@ class AddDeck extends Component {
 
         return(
             <KeyboardAvoidingView>
+            <Text>Add Deck</Text>
                 <Text>What is the title of your new deck?</Text>
                 <TextInput
                 value={input}
@@ -49,7 +55,7 @@ class AddDeck extends Component {
                 <TextButton onPress={this.handleSubmit}
                 disabled={input === ''}
                 >
-                    <Text>Create Deck Now</Text>
+                    <Text>Create Deck</Text>
                 </TextButton>
             </KeyboardAvoidingView>
         )

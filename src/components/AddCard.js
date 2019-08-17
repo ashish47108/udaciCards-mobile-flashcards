@@ -12,12 +12,14 @@ class AddCard extends Component {
     };
 
     handleSubmit = () => {
-        const deckId='e2zzcevj6c9ubljf33vn0i';
+        const deckId = this.props.navigation.getParam("deckId");
         const { question, answer } = this.state;
-        console.log('The question and aswer are ' + question + '::' + answer);
+        console.log('The question and aswer are now  ' + question + '::' + answer);
         
         this.props.createCard(deckId, question, answer);
         saveCard(deckId, { question, answer });
+
+        this.props.navigation.goBack(); //Return to Deck view.
 
         this.setState({
             question: "",
@@ -30,6 +32,7 @@ class AddCard extends Component {
         return (
             <KeyboardAvoidingView>
                 <KeyboardAvoidingView>
+                    <Text>Add Card</Text>
                     <Text>What's the question?</Text>
                     <TextInput
                         placeholder='Enter your question'
