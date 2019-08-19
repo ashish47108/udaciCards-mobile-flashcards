@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Text, TextInput, KeyboardAvoidingView, View } from 'react-native'
+import { Text, TextInput, KeyboardAvoidingView, View, StyleSheet } from 'react-native'
 import TextButton from './TextButton'
 import { createCard } from '../actions'
 import { saveCard } from '../utils/api'
+import { white, gray } from '../utils/colors'
 
 class AddCard extends Component {
     state = {
@@ -12,40 +13,40 @@ class AddCard extends Component {
     };
 
     handleSubmit = () => {
-        const deckId = this.props.navigation.getParam("deckId");
+        const deckId = this.props.navigation.getParam('deckId');
         const { question, answer } = this.state;
-        console.log('The question and aswer are now  ' + question + '::' + answer);
-        
+                
         this.props.createCard(deckId, question, answer);
         saveCard(deckId, { question, answer });
 
-        this.props.navigation.goBack(); //Return to Deck view.
+        this.props.navigation.goBack(); 
 
         this.setState({
-            question: "",
-            answer: ""
+            question: '',
+            answer: ''
         });
     }
 
     render() {
         const { question, answer } = this.state;
         return (
-            <KeyboardAvoidingView>
-                <KeyboardAvoidingView>
-                    <Text>Add Card</Text>
-                    <Text>What's the question?</Text>
+            <KeyboardAvoidingView behavior='padding' style={styles.container}>
+                <View style={styles.element}>                    
+                    <Text style={styles.label}>What's the question?</Text>
                     <TextInput
                         placeholder='Enter your question'
+                        style={styles.input}
                         onChangeText={question => this.setState({ question })}
                         value={question} />
-                </KeyboardAvoidingView>
-                <KeyboardAvoidingView>
-                    <Text>What's the Answer?</Text>
+                </View>
+                <View style={styles.element}>
+                    <Text style={styles.label}>What's the Answer?</Text>
                     <TextInput
                         placeholder='Enter your Answer'
+                        style={styles.input}
                         onChangeText={answer => this.setState({ answer })}
                         value={answer} />
-                </KeyboardAvoidingView>
+                </View>
                 <TextButton onPress={this.handleSubmit}
                     disabled={!(question !== '' && answer !== '')}
                 >
@@ -61,6 +62,32 @@ class AddCard extends Component {
 const mapDispatchToProps = dispatch => ({
     createCard: (deckId, question, answer) =>
       dispatch(createCard(deckId, question, answer))
+  });
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    element: {
+      margin: 5
+    },
+    label: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      textAlign: 'center'
+    },
+    input: {
+      backgroundColor: white,
+      width: 350,
+      fontSize: 20,
+      height: 50,
+      padding: 10,
+      borderWidth: 1,
+      borderColor: gray,
+      margin: 20
+    }
   });
 
 export default connect(null,mapDispatchToProps)(AddCard);

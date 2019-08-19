@@ -1,21 +1,20 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native'
+import React, { Component } from 'react'
+import { View, StatusBar, Dimensions } from 'react-native'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import reducer from './src/reducers'
 import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation'
-import { Feather } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons'
 import DecksList from './src/components/DecksList'
 import AddCard from './src/components/AddCard'
 import AddDeck from './src/components/AddDeck'
 import Deck from './src/components/Deck'
 import Quiz from './src/components/Quiz'
+import Constants from 'expo-constants'
 
-import Constants from 'expo-constants';
+import { purple, white } from './src/utils/colors'
 
-import { purple, white, grey } from './src/utils/colors'
-
-function UdaciStatusBar ({backgroundColor, ...props}) {
+function UdaciStatusBar({ backgroundColor, ...props }) {
   return (
     <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
       <StatusBar translucent backgroundColor={backgroundColor} {...props} />
@@ -28,18 +27,18 @@ const Tabs = createBottomTabNavigator(
     DecksList: {
       screen: DecksList,
       navigationOptions: {
-        tabBarLabel: "Decks List",
+        tabBarLabel: 'Decks List',
         tabBarIcon: ({ tintColor }) => (
-          <Feather name="list" size={30} color={tintColor} />
+          <Feather name='list' size={30} color={tintColor} />
         )
       }
     },
     AddDeck: {
       screen: AddDeck,
       navigationOptions: {
-        tabBarLabel: "Add Deck",
+        tabBarLabel: 'Add Deck',
         tabBarIcon: ({ tintColor }) => (
-          <Feather name="plus" size={30} color={tintColor} />
+          <Feather name='plus' size={30} color={tintColor} />
         )
       }
     }
@@ -53,7 +52,7 @@ const Tabs = createBottomTabNavigator(
       style: {
         height: 60,
         backgroundColor: white,
-        shadowColor: "rgba(0, 0, 0, 0.24)",
+        shadowColor: 'rgba(0, 0, 0, 0.24)',
         shadowOffset: {
           width: 0,
           height: 3
@@ -64,7 +63,7 @@ const Tabs = createBottomTabNavigator(
       labelStyle: {
         paddingTop: 3,
         fontSize: 14,
-        fontWeight: "bold"
+        fontWeight: 'bold'
       }
     }
   }
@@ -73,48 +72,55 @@ const Tabs = createBottomTabNavigator(
 const MainNavigator = createAppContainer(createStackNavigator(
   {
     Home: Tabs,
-    Deck: Deck,
-    AddCard: AddCard,
-    Quiz: Quiz,
-    
+
+    Deck: {
+      screen: Deck,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Home'
+      }),
+    },
+    AddCard: {
+      screen: AddCard,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Deck'
+      }),
+    },
+
+    Quiz: {
+      screen: Quiz,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Deck'
+      }),
+    },
+
   },
   {
     initialRouteName: "Home",
-    navigationOptions: {
+    defaultNavigationOptions: ({ navigation }) => ({
       headerTintColor: white,
-      headerStyle: { backgroundColor: purple },
-      headerTitleStyle: { fontWeight: "bold" }
-    }
+      title: 'Deck',
+      headerStyle: {
+        backgroundColor: purple,
+      },
+      headerTitleStyle: { width: Dimensions.get("window").width }
+    })
   }
 ));
 
-
 class App extends Component {
   render() {
-  return (
-    <Provider store={createStore(reducer)}>
-    <View style={{flex: 1}}>
-		
-        <UdaciStatusBar
+    return (
+      <Provider store={createStore(reducer)}>
+        <View style={{ flex: 1 }}>
+          <UdaciStatusBar
             backgroundColor={purple}
             barStyle="light-content"
           />
-      
-	  <Text>Open up App.js to start work now</Text>
-    <MainNavigator />
-    </View>
-    </Provider>
-  );
+          <MainNavigator />
+        </View>
+      </Provider>
+    );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default App;

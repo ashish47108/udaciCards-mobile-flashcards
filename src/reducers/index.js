@@ -1,21 +1,20 @@
-import { CREATE_DECK, RECEIVE_DECKS, CREATE_CARD } from "../actions";
+import { CREATE_DECK, RECEIVE_DECKS, CREATE_CARD, DELETE_DECK } from '../actions'
 
 const initialState = null;
 
 const decks = (state = initialState, action) => {
-    console.log('State is following');
-    console.log(state);
+    
     switch (action.type) {
-        case CREATE_DECK :
+        case CREATE_DECK:
             return {
                 ...state,
-                [action.id] : {
-                    id:action.id,
-                    name:action.name,
+                [action.id]: {
+                    id: action.id,
+                    name: action.name,
                     cards: [],
                 }
             }
-        case RECEIVE_DECKS :
+        case RECEIVE_DECKS:
             return {
                 ...state,
                 ...action.decks
@@ -25,12 +24,16 @@ const decks = (state = initialState, action) => {
                 ...state,
                 [action.deckId]: {
                     ...state[action.deckId],
-                    cards:[
+                    cards: [
                         ...state[action.deckId].cards,
-                        {question: action.question, answer: action.answer}
+                        { question: action.question, answer: action.answer }
                     ]
                 }
             }
+        case DELETE_DECK:
+            delete state[action.deckId];
+            return state;
+
         default:
             return state;
     }

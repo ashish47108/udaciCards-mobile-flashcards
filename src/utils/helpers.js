@@ -1,6 +1,4 @@
 import { Notifications } from 'expo'
-
-//import { Permissions } from "expo";
 import * as Permissions from 'expo-permissions'
 import { AsyncStorage } from 'react-native'
 
@@ -9,6 +7,16 @@ const NOTIFICATION_KEY = 'UdaciCards:notifications'
 
 export const generateId = () => {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+}
+
+export const GetSingularOrPlural=(length) => {
+  
+  if(length > 1){
+    return 'Cards';
+  }
+  else{
+    return 'Card';
+  }
 }
 
 export const createNotification = () => ({
@@ -39,9 +47,8 @@ export const setLocalNotification = () => {
             Notifications.cancelAllScheduledNotificationsAsync();
             let tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
-            tomorrow.setHours(11);
-            tomorrow.setMinutes(40);
-            
+            tomorrow.setHours(18);
+            tomorrow.setMinutes(30);            
             Notifications.scheduleLocalNotificationAsync(createNotification(), {
               time: tomorrow,
               repeat: "day"
