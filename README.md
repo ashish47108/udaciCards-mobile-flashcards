@@ -23,4 +23,7 @@ $ npm install
 $ npm start
 ```
 
-**This will open a new browser tab/window with the application running.**
+4. Start android emulator and then press a on command prompt where you started application using `npm`
+
+
+**This will start udaciCards app in android emulator.**
